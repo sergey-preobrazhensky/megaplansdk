@@ -4,19 +4,19 @@ include 'MegaplanResponse.php';
 
 class MegaplanRequest
 {
-    private string $host;
-    private string $token;
-    private logger\LoggerInterface $logger;
+    const MAX_INCLUDED_DEEP = 5;
 
     /**
      * @param string $host
      * @param string $token
      */
-    public function __construct(string $host, string $token, logger\LoggerInterface $logger)
+    public function __construct(
+        private string $host,
+        private string $token,
+        private logger\LoggerInterface $logger,
+        private bool $includedResponse = true
+    )
     {
-        $this->host = $host;
-        $this->token = $token;
-        $this->logger = $logger;
     }
 
     public function get($url, $params = [], $headers = []): MegaplanResponse
@@ -46,11 +46,16 @@ class MegaplanRequest
         $headers = array_merge([
             'AUTHORIZATION: Bearer '.$this->token,
             'content-type: application/json',
+            $this->includedResponse ? 'X-USE-INCLUDED-RESPONSE: true' : '',
         ], $headers);
 
         try {
             list($httpCode, $rawResponse) = $this->doRequest($type, $this->host.$url, $params, $headers);
             $data = json_decode($rawResponse);
+            if (!empty($data->data) && !empty($data->included)) {
+                $includedByType = $this->getIncludedByType($data->included);
+                $data->data = $this->processIncluded($data->data, $includedByType);
+            }
             $this->logger->info('data', $data);
         } catch (Exception $e) {
             $exceptionMessage = $e->getMessage();
@@ -107,5 +112,41 @@ class MegaplanRequest
         }
 
         return [$httpCode, $content];
+    }
+
+    private function processIncluded($data, array $includedByType, $deep = 0)
+    {
+        $deep++;
+        if ($deep > self::MAX_INCLUDED_DEEP || !is_array($data) && !is_object($data)) {
+            return $data;
+        }
+        foreach ($data as $i => $item) {
+            if (is_object($item) && count(get_object_vars($item)) === 2) {
+                if (
+                    !empty($item->contentType) &&
+                    !empty($item->id) &&
+                    !empty($includedByType[$item->contentType][$item->id])
+                ) {
+                    $item = $includedByType[$item->contentType][$item->id];
+                }
+            }
+            if (is_array($data)) {
+                $data[$i] = $this->processIncluded($item, $includedByType, $deep);
+            } elseif (is_object($data)) {
+                $data->$i = $this->processIncluded($item, $includedByType, $deep);
+            }
+        }
+
+        return $data;
+    }
+
+    private function getIncludedByType($included)
+    {
+        $includedByType = [];
+        foreach ($included as $object) {
+            $includedByType[$object->contentType][$object->id] = $object;
+        }
+
+        return $includedByType;
     }
 }
