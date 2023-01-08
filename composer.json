@@ -1,0 +1,20 @@
+{
+    "name": "sergey-preobrazhensky/megaplansdk",
+    "description": "PHP Library for work with API Megaplan",
+    "type": "library",
+    "autoload": {
+        "psr-4": {
+            "SergeyPreobrazhensky\\Megaplansdk\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Sergey Preobrazhensky",
+            "email": "yavi.gm@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=8.0"
+    }
+}
