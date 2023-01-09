@@ -13,7 +13,7 @@ class ConsoleLogger extends AbstractLogger
         }
     }
 
-    public static function infoLogger()
+    public static function infoLogger(): ConsoleLogger
     {
         return new ConsoleLogger(AbstractLogger::LEVEL_INFO);
     }

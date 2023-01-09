@@ -2,10 +2,11 @@
 /**
  * Обработка подписки на события
  */
-use SergeyPreobrazhensky\Megaplansdk\Logger\ConsoleLogger;
+
+use SergeyPreobrazhensky\Megaplansdk\Logger\FileLogger;
 
 include __DIR__.'/../../vendor/autoload.php';
-$logger = ConsoleLogger::infoLogger();
+$logger = FileLogger::infoLogger(__DIR__. '/debug.log');
 
 $requestContent = file_get_contents('php://input');
 $decoded = json_decode($requestContent);

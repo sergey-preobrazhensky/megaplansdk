@@ -14,7 +14,6 @@ $data = $response->getData();
 
 $logger->info('data', $data);
 foreach ($data->data as $field) {
-    $logger->info('');
     $logger->info('id', $field->id);
     $logger->info('contentType', $field->contentType);
     if (!empty($field->hrName)) {

@@ -1,6 +1,6 @@
 <?php
 
-use SergeyPreobrazhensky\Megaplansdk\Logger\ConsoleLogger;
+use SergeyPreobrazhensky\Megaplansdk\Logger\FileLogger;
 use SergeyPreobrazhensky\Megaplansdk\MegaplanRequest;
 
 include 'vendor/autoload.php';
@@ -14,7 +14,7 @@ $host = '';
  * - получить через специальный запрос, используя логин и пароль (ограничен по времени)
 **/
 $token = '';
-$logger = ConsoleLogger::infoLogger();
+$logger = FileLogger::infoLogger(__DIR__. '/debug.log');
 $request = new MegaplanRequest($host, $token, $logger);
 
 // подключаем файл с примером
