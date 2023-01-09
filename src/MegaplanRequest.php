@@ -1,6 +1,8 @@
 <?php
 
-include 'MegaplanResponse.php';
+namespace SergeyPreobrazhensky\Megaplansdk;
+
+use Exception;
 
 class MegaplanRequest
 {
@@ -41,7 +43,6 @@ class MegaplanRequest
         $httpCode = 0;
         $rawResponse = '';
         $exceptionMessage = '';
-        $data = new stdClass();
 
         $headers = array_merge([
             'AUTHORIZATION: Bearer '.$this->token,

@@ -1,6 +1,9 @@
 <?php
 
-include 'autoload.php';
+use SergeyPreobrazhensky\Megaplansdk\Logger\ConsoleLogger;
+use SergeyPreobrazhensky\Megaplansdk\MegaplanRequest;
+
+include 'vendor/autoload.php';
 
 // хост аккаунта мегаплана в виде mp123456.megaplan.ru
 $host = '';
@@ -11,7 +14,7 @@ $host = '';
  * - получить через специальный запрос, используя логин и пароль (ограничен по времени)
 **/
 $token = '';
-$logger = logger\ConsoleLogger::infoLogger();
+$logger = ConsoleLogger::infoLogger();
 $request = new MegaplanRequest($host, $token, $logger);
 
 // подключаем файл с примером

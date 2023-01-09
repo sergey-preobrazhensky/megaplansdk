@@ -2,8 +2,11 @@
 /**
  * Обработка внешнего запроса из сделки/бизнес процесса
  */
-include 'autoload.php';
-$logger = new logger\ConsoleLogger(\logger\AbstractLogger::LEVEL_INFO);
+
+use SergeyPreobrazhensky\Megaplansdk\Logger\ConsoleLogger;
+
+include __DIR__.'/../../vendor/autoload.php';
+$logger = ConsoleLogger::infoLogger();
 
 $requestContent = file_get_contents('php://input');
 $decoded = json_decode($requestContent);

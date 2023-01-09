@@ -1,5 +1,7 @@
 <?php
 
+namespace SergeyPreobrazhensky\Megaplansdk;
+
 class MegaplanResponse
 {
     private string $httpCode;

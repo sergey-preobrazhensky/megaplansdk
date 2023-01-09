@@ -2,8 +2,10 @@
 /**
  * Обработка данных при заходе в настройки
  */
-include 'autoload.php';
-$logger = new logger\ConsoleLogger(\logger\AbstractLogger::LEVEL_INFO);
+use SergeyPreobrazhensky\Megaplansdk\Logger\ConsoleLogger;
+
+include __DIR__.'/../../vendor/autoload.php';
+$logger = ConsoleLogger::infoLogger();
 
 $requestData = $_REQUEST;
 // Адрес аккаунта в Мегаплане, например mp123456.megplan.ru

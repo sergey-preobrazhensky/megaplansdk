@@ -1,6 +1,6 @@
 <?php
 
-namespace logger;
+namespace SergeyPreobrazhensky\Megaplansdk\Logger;
 
 abstract class AbstractLogger implements LoggerInterface
 {
